@@ -5,12 +5,16 @@ import Tempo from './components/Tempo';
 import Api from  './components/Api';
 
 export default function App() {
-  const [cidade, setCidade] = useState("itu");
+  const [cidade, setCidade] = useState("sao paulo");
   const [dados, setDados] = useState("");
+  const [dadosum, setDadosum] = useState("");
+  const [dadosdois, setDadosdois] = useState("");
 
   async function buscaCep(){
-    const response = await Api.get(`weather?array_limit=2&fields=only_results,temp,city_name,forecast,max,min,date,description&key=d54ef21d&city_name=${cidade},SP`);
+    const response = await Api.get(`weather?array_limit=2&fields=only_results,temp,city_name,date,time,forecast,max,min,description&key=296ae3bd&city_name=${cidade},SP`);
     setDados(response.data.forecast[0]);
+    setDadosum(response.data);
+    setDadosdois(response.data.forecast[1]);
   }
   return (
     <View style={styles.container}>
@@ -30,7 +34,7 @@ export default function App() {
           <Text style={styles.textoBotao}>Buscar</Text>
         </TouchableOpacity>
       </View>
-      <Tempo data={dados}/>
+      <Tempo data={dados} data1={dadosum} data2={dadosdois} />
     </View>
   );
 }
