@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import Tempo from './components/Tempo';
 
 import Api from  './components/Api';
@@ -11,8 +11,8 @@ export default function App() {
   const [dadosdois, setDadosdois] = useState("");
 
   async function buscaCep(){
-    const response = await Api.get(`weather?array_limit=2&fields=only_results,temp,city_name,date,time,forecast,max,min,description&key=296ae3bd&city_name=${cidade},SP`);
-    setDados(response.data.forecast[0]);
+    const response = await Api.get(`weather?array_limit=10&fields=only_results,temp,city_name,date,time,forecast,max,min,description&key=e4c586c4 &city_name=${cidade},SP`);
+    setDados(response.data.forecast);
     setDadosum(response.data);
     setDadosdois(response.data.forecast[1]);
   }
@@ -34,7 +34,20 @@ export default function App() {
           <Text style={styles.textoBotao}>Buscar</Text>
         </TouchableOpacity>
       </View>
-      <Tempo data={dados} data1={dadosum} data2={dadosdois} />
+      {/* <Tempo data={dados} data1={dadosum} data2={dadosdois} /> */}
+      <FlatList
+        data={dados}
+        renderItem={({item})=>{
+          return(
+            <View>
+              <Text>Data: {item.date}</Text>
+              <Text>Max: {item.max}</Text>
+              <Text>Min: {item.min}</Text>
+              <Text>Descrição: {item.description}</Text>
+            </View>
+          );
+        }}
+      />
     </View>
   );
 }
